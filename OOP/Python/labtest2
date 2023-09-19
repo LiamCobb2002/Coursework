@@ -1,0 +1,139 @@
+"""
+Lab test 2
+Author: Liam Cobb C21322051
+
+This programme allows you to set the attributes of different dogs.
+The Dog class allows you to set the name breed and age of the dog.
+The Guard dog class allows you to set the trainer, trained status and guarding status.
+All information is outputted by the sample code. There is a ValueError check for the dog volume.
+
+"""
+
+
+class Dog:
+    def __init__(self, name, breed, age):
+    # receives name, breed and age from sample code
+        self.breed = breed
+        self._age = age
+        self.__name = name
+
+    @property
+    def age_property(self):
+    #returns age
+        return self._age
+
+    @staticmethod
+    def bark(level):
+
+        if level == 1:
+        #prints 1 if level is 1
+            print("woof woof")
+
+        elif level == 2:
+        #prints 2 if level is 2
+            print("WOOF WOOF")
+
+        else:
+        #raises value error if input isnt 1 or 2
+            raise ValueError("pick 1 or 2")
+
+
+class GuardDog(Dog):
+    def __init__(self, name, breed, age):
+    #receives name, breed and age from sample code
+        self.breed = breed
+        self._age = age
+        self.__name = name
+
+        self.is_trained = False
+        self.can_guard = False
+        self._trained_by = "name"
+
+    @property
+    def age_property(self):
+    #returns age, overwrites age from Dog class
+
+        print("guard dog")
+        #couldnt get guard dog to follow
+        return self._age
+
+    @property
+    def trainer_property(self):
+    #
+        return self._trained_by
+
+    @trainer_property.setter
+    def trainer_property(self, value):
+    #setter for _trained_by
+        self._trained_by = value
+
+    def train(self, trainer):
+    #changes dog to trained and assigns trainer name
+        self.is_trained = True
+        self.trained_by = trainer
+
+    def guard(self):
+        if self.is_trained == True:
+        #if dog is trained it can guard
+            self.can_guard = True
+            return self.can_guard
+
+        elif self.is_trained == False:
+        #if dog isnt trained, it cant guard
+            self.can_guard = False
+            return self.can_guard
+
+dog = Dog("Flash", "Golden Retriever", 5)
+guard_dog = GuardDog("Maximus", "German Shepherd", 3)
+
+print(dog.age_property) # should print 5
+print(guard_dog.age_property) # should print 3 (guard dog)
+print(dog.breed)
+print(guard_dog.breed)
+
+try:
+    dog.bark(1)
+except ValueError as ve:
+    print(ve)
+except Exception as e:
+    print("Unexpected error\n", e)
+
+try:
+    guard_dog.bark(2)
+except ValueError as ve:
+    print(ve)
+except Exception as e:
+    print("Unexpected error\n", e)
+
+try:
+    guard_dog.bark(3)
+except ValueError as ve:
+    print(ve)
+except Exception as e:
+    print("Unexpected error\n", e)
+
+guard_dog.train("Bianca")
+guard_dog.guard()
+
+print(guard_dog.can_guard) # should print True
+print(guard_dog.trainer_property) # should print Bianca
+
+try:
+    guard_dog.trainer_property = 1
+except TypeError as te:
+    print(te)
+except Exception as e:
+    print("Unexpected error\n", e)
+
+try:
+    guard_dog.trainer_property = "Svetlana"
+except TypeError as te:
+    print(te)
+except Exception as e:
+    print("Unexpected error\n", e)
+
+print(guard_dog.trainer_property)
+
+
+
+
