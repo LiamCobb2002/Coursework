@@ -1,3 +1,6 @@
+--Author: Liam Cobb
+--Assignment creating tables, inserting values and completing a series of select statements and joins
+
 drop view a;
 drop view b;
 drop table Booking_detail;
