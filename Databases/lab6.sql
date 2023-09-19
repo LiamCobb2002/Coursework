@@ -1,3 +1,5 @@
+--Author: Liam Cobb
+
 select count(*) from M_MOVIES;
 
 select genre, count(*) as "number of movies"
