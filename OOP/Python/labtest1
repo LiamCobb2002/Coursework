@@ -1,0 +1,88 @@
+"""
+Liam Cobb
+C21322051
+
+The first part of this programme allows the user to select from a
+list of numbers, this input is only allowed if it is a digit and between 0 and 3.
+
+The second half of this programme is a game in which the player
+must guess the correct digits in the hidden number.
+When all 3 digits are guessed correctly  then victory message appears
+along with the winning number
+"""
+condition = True
+number_list = ['123', '234', '456', '567']
+
+
+while condition:
+#creates constant loop
+    my_value = input("Enter a value between 0 and 3")
+
+    if not my_value.isdigit():
+    #only allows for digit, continues loop
+        print("Enter a digit")
+        continue
+        #skips the rest of the loop
+    my_value = int(my_value)
+
+    if my_value > 3 or my_value < 0:
+        print("Number must be between 0 and 3")
+
+    else:
+        condition = False
+        #breaks free from the loop
+
+
+game_num = list(number_list[my_value])
+#turns number into list
+
+num1 = 0
+num2 = 0
+num3 = 0
+#allow to keep track of  correct entries
+
+while 1:
+    #creates infinite loop
+
+    my_guess = input("Guess digit in the number number")
+
+    if my_guess == game_num[0]:
+    #if the input is the same as the position in list
+        if num1 == 0:
+        #first correct guess
+            print("well done, this digit is in position [0]")
+            num1 = 1
+
+        else:
+        #if number is had been guessed before
+            print("you have already guessed this number correctly")
+
+
+
+    elif my_guess == game_num[1]:
+        if num2 == 0:
+            print("well done, this digit is in position [1]")
+            num2 = 1
+        else:
+            print("you have already guessed this number correctly")
+
+
+    elif my_guess == game_num[2]:
+        if num3 == 0:
+            print("well done. this digit is in position [2]")
+            num3 = 1
+
+        else:
+            print("you have already guessed this number correctly")
+
+    if num1 == 1 and num2 == 1 and num3 == 1:
+    #triggers once all digits are guessed correctly
+        break
+        #breaks free from infinite loop
+
+    else:
+        pass
+
+print("you have won the game!")
+print("The number was:")
+print(game_num)
