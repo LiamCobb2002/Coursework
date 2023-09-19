@@ -1,3 +1,4 @@
+--Author: Liam Cobb
 
 drop table company,employee,training;
 CREATE TABLE company (
