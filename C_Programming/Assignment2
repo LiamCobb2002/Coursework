@@ -1,0 +1,380 @@
+/*
+Author: Liam Cobb
+Date: 18/3/22
+
+This programme is a lottery game which allows the user to input 6 numbers
+option 1 allows the user to input their answers to an array
+option 2 displays these numbers to the user
+option 3 sorts the array from smallest to largest
+option 4 compares your input to the lotto answers and displays the amount of correct numbers
+option 5 displays the frequency of each number entered by the user
+option 6 allows the user to gracefully terminate the programme
+ 
+the winning numbers are 1,3,5,7,9,11 
+ 
+the user cant enter the same number twice in any given turn
+options 2,3,4,5 can only be selected after 6 correct numbers ahv been entered
+the user is returned to the main menu after each menu choice
+ */
+#include <stdio.h>
+
+#define SIZE 6
+#define FREQ 42
+
+void op1(int *, int *);
+void op2(int *);
+void op3(int *);
+void op4(int *, int *);
+void op5(int *);
+int main()
+{
+   int values[SIZE]; 
+   //array of user inputs
+   int win_values[SIZE] = {1,3,5,7,9,11}; 
+   //array of winning numbers
+   int appear[FREQ] = {0,0,0,0,0,0,
+                       0,0,0,0,0,0,
+                       0,0,0,0,0,0,
+                       0,0,0,0,0,0,
+                       0,0,0,0,0,0,
+                       0,0,0,0,0,0,
+                       0,0,0,0,0,0};
+   //array used in option 5 to show frequency
+   int i = 0;                   
+   int choice = 0; 
+   //variable for main menu
+   int end_run = 0;
+   //variable to exit programme
+   int quizlock = 0;
+   //variable that prevents op 2,3,4,5 form being chose before op1
+
+    while(end_run == 0)
+    //loop will continue until op6 is chosen
+    {
+        printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        printf("                  Lotto\n");
+        printf("             1. Enter numbers\n");
+        printf("             2. Display numbers\n");
+        printf("             3. Sort numbers\n");
+        printf("             4. See what youve won\n");
+        printf("             5. Display answer frequency\n");
+        printf("             6. Exit Game\n");
+        printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+
+        scanf("%d", &choice);
+        //user input for manu selection
+
+        switch(choice)
+        //switch for menu
+        {
+            case 1:
+            //if choice is 1
+            {
+                op1(values, appear);
+                //runs the op1 function
+                quizlock = 1;
+                //allows op2,3,4,5 to be chosen
+                break;               
+            }//end case
+
+            case 2:
+            //if choice is 2
+            {               
+                if(quizlock == 1)
+                //if op1 is completed, continue
+                {
+                    op2(values);
+                    //run op2
+
+                    
+                }
+
+                else
+                //if op1 isnt completed, loop main menu
+                {
+                    printf("Please select option 1 first\n");
+                }
+
+                break;
+            }//end case
+
+            case 3:
+            {
+                if(quizlock == 1)
+                {
+                    op3(values);
+                    //run op3
+                    
+                }
+
+                else
+                {
+                    printf("Please select option 1 first\n");
+                }
+
+                break;
+            }//end case
+
+            case 4:
+            {
+                if(quizlock == 1)
+                {
+                    op4(values, win_values);
+                    //run op4
+                }
+
+                else
+                {
+                    printf("Please select option 1 first\n");
+                }
+
+                break;
+            }//end case
+
+             case 5:
+            {
+                if(quizlock == 1)
+                {
+                    op5(appear);
+                    //run op5
+                }
+
+                else
+                {
+                    printf("Please select option 1 first\n");
+                }
+
+                break;
+
+            }//end case
+
+            case 6:
+            {
+                end_run = 1;
+                //breaks while loop
+                
+                break;
+            }//end case
+
+            default:
+            //if no case is chosen
+            {
+                printf("Please choose option 1-6");
+            }//end default
+        }//end switch
+    }//end while
+    
+    printf("You have exited the programme");
+    //result of choice 6 in main menu 
+} // end main()
+
+/*
+function op1 allows the user to enter their numbers into the array
+it also has a feature to prevent:
+1. duplicates
+2. numbers not from 1-42
+*/
+void op1(int *my_array, int *frequency)
+{
+   int error = 0;
+    //changes to 1 when duplicate is found
+   int freqlock = 0;
+   //prevents frequency being increased
+   printf("Enter 6 numbers from 1-42\n");
+
+   for(int i = 0; i < SIZE; i++)
+   //loop for entering lotto numbers
+   {
+       printf("Enter number %d: ", i+1);
+       scanf("%d", my_array + i);
+       //user input into the array
+    
+       for(int j = 0; j < i; j++)
+       //loop to prevent dublicates
+       {
+           if(*(my_array+i) == *(my_array + j))
+           //if the number is a duplicate
+           {
+               error = 1;
+               break;
+               //break from loop
+           }//end if
+       }//end for
+
+       if(error == 1)
+       //if error is changed to 1
+       {
+           printf("Duplicate number has been chosen\n");
+           op1(my_array, frequency);
+           //run op1 again
+           break;
+           //break from current loop
+       }//end if
+
+       int array_find = 0;
+       //changes to 1 when number is 1-42
+
+       for(int k = 1; k < FREQ; k++)
+        {
+            
+            if(*(my_array + i) == k)
+            //if number entered is 1-42
+            { 
+                array_find = 1;
+                //change array_find to 1 
+                freqlock++;
+                //adds 1 to freqlock 
+            }//end if
+        }//end for
+
+        if(array_find == 0)
+        //if number entered isnt 1-42
+        {
+           printf("You entered a number other than 1-42\n");
+           op1(my_array, frequency);
+           //run op2 again 
+           break;
+        }//end if   
+    } // end for 
+
+    if(freqlock == SIZE)
+    {
+        for(int i = 0; i<SIZE; i++)
+        {
+            *(frequency + *(my_array + i)) = *(frequency + *(my_array + i)) + 1; 
+            //adds 1 to the frequency of each current number 
+        }
+    }//end if
+}//end op1
+
+//function op2 displays  the array of entered numbers
+void op2(int *my_array)
+{
+   for(int i = 0; i < SIZE; i++)
+   {
+        if(i == SIZE-1)
+        {
+            printf("%d", *(my_array + i));
+        }//end if
+
+        else
+        {
+            printf("%d,", *(my_array + i));
+        }//end else
+   }//end for
+}//end op2
+
+/*
+function op3 sorts the array from smallest to largest
+I used selection sort for this
+*/
+void op3(int *my_array)
+{
+   int min = 0;
+   //smallest variable
+   int temp  = 0;
+   //temporary variable
+   int i = 0;
+   int j = 0;
+   for(i = 0; i < SIZE ; i++)
+   {
+        min = i;
+        
+        for(j = 0; j < SIZE-1; j++)
+        {
+            if(*(my_array + j) > *(my_array + min))
+            //if current number is smaller than minimum
+            {
+                min=j;  
+            }//end if
+
+            temp = *(my_array + min);
+            //temp is changed to my_array[min]
+            *(my_array + min) = *(my_array + i);
+            //my_array[min] is changed to my_array[i]
+            *(my_array +i) = temp;      
+            //my_array[i] is changed to temp
+        }//end for
+   }//end for
+
+   printf("Your numbers have now been sorted");
+}//end op3
+
+/*
+function op2 calculates the amount of correct numbers
+it then prints the appropriate winning message
+*/
+void op4(int *my_array, int *win_array)
+{
+    int i = 0;
+    int j = 0;
+    int win_count = 0;
+    for(i = 0; i<SIZE; i++)
+    {
+        for(j = 0; j<SIZE; j++)
+        {
+            if(*(my_array + i) == *(win_array + j))
+            //if user number equals winning number
+            {
+                win_count++;
+                //win_count increased by one
+            }//end if   
+        }//end for
+    }//end for
+
+    if(win_count == 1)
+    {
+        printf("You got %d number correct\n", win_count);
+    }//end if
+
+    else
+    {
+        printf("You got %d numbers correct\n", win_count);
+    }//end else
+
+    switch(win_count)
+    {
+        case 3:
+        {
+            printf("You have won a cinema pass\n");
+            break;
+        }//end case
+
+        case 4:
+        {
+            printf("You have won a free weekend away\n");
+            break;
+        }//end case
+
+        case 5:
+        {
+            printf("You have won a brand new car\n");
+            break;
+        }//end case
+
+        case 6:
+        {
+            printf("You have won the jackpot of 1 milion Euro!\n");
+            break;
+        }//end case
+
+        default:
+        {
+            printf("You didnt win anything\nBetter luck next time :(\n");
+        }//end default
+    }//end switch
+}//end op4
+
+//function op5 prints out the frequency of each number
+void op5(int *frequency)
+{
+    for(int i = 0; i<FREQ; i++)
+    {
+        if(*(frequency + i)>0)
+        {
+            printf("The number %d has been entered %d times\n", i, *(frequency +i));
+            //prints frequency
+        }//end if
+    }//end for
+}//end op5
+
