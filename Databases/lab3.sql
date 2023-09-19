@@ -1,3 +1,5 @@
+--Author: Liam Cobb
+
 --drop table clothh, compp;
 create table compp (
 	producer_id varchar(20) primary key,
